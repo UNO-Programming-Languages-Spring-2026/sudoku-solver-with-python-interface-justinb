@@ -27,13 +27,20 @@ class Sudoku:
                     s += " "
         return s
 
-
-
-
     @classmethod
     def from_str(cls, s: str) -> "Sudoku":
         sudoku = {}
-        # YOUR CODE HERE
+        s = s.replace("\n\n", "\n")
+        s = s.replace("  ", " ")
+        s = s.split("\n")
+        for i in range(9):
+            s[i] = s[i].split(" ")
+
+        sudoku = {}
+        for i in range(9):
+            for j in range(9):
+                if s[i][j] != "-":
+                    sudoku[(i+1,j+1)] = int(s[i][j])
         return cls(sudoku)
 
     @classmethod
