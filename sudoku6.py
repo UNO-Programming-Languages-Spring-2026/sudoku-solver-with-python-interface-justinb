@@ -22,34 +22,14 @@ class Context:
 class ClingoApp(clingo.application.Application):
 
     def print_model(self, model, printer) -> None:
-        sudoku = {}
-        symbols = model.symbols(shown=True)
-        for s in symbols:
-            sudoku[(s.arguments[0].number,s.arguments[1].number)] = s.arguments[2].number
-
-        s = ""
-        sudokuDict = sudoku
-        arr = [[0 for i in range(9)] for j in range(9)]
-        for coord in sudokuDict:
-            a,b = coord
-            arr[a-1][b-1] = sudokuDict[coord]
-
-        for i in range(9):
-            for j in range(9):
-                s += str(arr[i][j])
-                if(j == 2 or j == 5):
-                    s += "  "
-                elif(j == 8):
-                    if(i == 2 or i == 5):
-                        s += "\n"
-                    s += "\n" 
-                else:
-                    s += " "
-        print(s)
+        sudoku = Sudoku.from_model(model)
+        print(sudoku)
 
     def main(self, ctl, files):
         ctl.load("sudoku.lp")
-        context = Context(files)
+        ctl.load("sudoku_py.lp")
+        f = open(files[0],"r")
+        context = Context(Sudoku.from_str(f.read()))
         ctl.ground([("base", [])], context)
         ctl.solve()
 
