@@ -20,5 +20,8 @@ class Sudoku:
     @classmethod
     def from_model(cls, model: clingo.solving.Model) -> "Sudoku":
         sudoku = {}
-        # YOUR CODE HERE
+        symbols = model.symbols(shown=True)
+        for s in symbols:
+            sudoku[(s.arguments[0].number,s.arguments[1].number)] = s.arguments[2].number
+
         return cls(sudoku)
